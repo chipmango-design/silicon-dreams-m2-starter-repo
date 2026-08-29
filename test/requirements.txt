@@ -1,0 +1,9 @@
+# Silicon Dreams Module 2 - Python dependencies.
+#
+# cocotb drives simulation; pytest is not used but is imported by some
+# cocotb utility modules. Versions are pinned to what ChipFoundry CI
+# runs so your local results match CI.
+
+cocotb==1.9.2
+cocotb-bus==0.2.1
+pytest==8.3.3

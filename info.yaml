@@ -1,0 +1,58 @@
+#
+# ChipFoundry chipIgnite shuttle metadata — Silicon Dreams Module 2.
+#
+# Learners replace `author` and `discord` before submission. All other
+# fields stay unchanged — they are enforced by the course grading CI.
+#
+
+project:
+  title:       "Silicon Dreams · Module 2 · The Parallel Shaft"
+  description: >-
+    Fault-injection hardened elevator controller. Week 2 of the
+    ChipMango x ChipFoundry Silicon Dreams course (CM-HW-101). Adds
+    reset-polarity, SEU, input-validation, and area fixes on top of
+    the Module 1 RTL.
+  author:      "YOUR NAME HERE"
+  discord:     "YOUR-DISCORD-HANDLE"
+  language:    "Verilog"
+  clock_hz:    100000000
+  tags:
+    - course
+    - silicon-dreams
+    - fault-injection
+    - chipignite
+
+pinout:
+  ui_in:
+    - "request_strobe"
+    - "requested_floor[0]"
+    - "requested_floor[1]"
+    - "requested_floor[2]"
+    - "requested_floor[3]"
+    - "reserved"
+    - "reserved"
+    - "reserved"
+  uo_out:
+    - "current_floor[0]"
+    - "current_floor[1]"
+    - "current_floor[2]"
+    - "current_floor[3]"
+    - "state[0]"
+    - "state[1]"
+    - "state[2]"
+    - "door_open"
+  uio:
+    - "fault_inject_enable"
+    - "reserved"
+    - "reserved"
+    - "reserved"
+    - "reserved"
+    - "reserved"
+    - "reserved"
+    - "error_led"
+
+course:
+  code:        "CM-HW-101"
+  module:      "M2"
+  cohort:      "2026-spring"
+  partners:    ["ChipMango", "ChipFoundry"]
