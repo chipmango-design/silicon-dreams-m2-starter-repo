@@ -1,6 +1,11 @@
 # Silicon Dreams · Module 2 · The Parallel Shaft
 
-[![Smoke](../../workflows/smoke/badge.svg)](../../actions/workflows/smoke.yml) [![Fault](../../workflows/fault-matrix/badge.svg)](../../actions/workflows/fault-matrix.yml) [![Docs](../../workflows/docs/badge.svg)](../../actions/workflows/docs.yml)
+[![Smoke](../../workflows/smoke/badge.svg)](../../actions/workflows/smoke.yml)
+[![Fault](../../workflows/fault-matrix/badge.svg)](../../actions/workflows/fault-matrix.yml)
+[![Docs](../../workflows/docs/badge.svg)](../../actions/workflows/docs.yml)
+[![GDS](../../workflows/gds/badge.svg)](../../actions/workflows/gds.yml)
+[![FPGA](../../workflows/fpga/badge.svg)](../../actions/workflows/fpga.yml)
+[![Test](../../workflows/test/badge.svg)](../../actions/workflows/test.yml)
 
 This repository is the **Week 2 starter project** for the Silicon Dreams course (`CM-HW-101`), a three-week co-delivered programme from **ChipMango** and **ChipFoundry** that takes learners from RTL to real silicon.
 
