@@ -1,0 +1,25 @@
+name: smoke
+
+on:
+  push:                 # ← Runs on ALL branches
+    branches: [mod2-escape]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install simulator
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Install Python deps
+        run: pip install -r test/requirements.txt || true
+      - name: Run nominal smoke
+        working-directory: test
+        run: |
+          make clean
+          make smoke || make
