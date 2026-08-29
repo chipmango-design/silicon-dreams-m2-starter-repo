@@ -1,58 +1,56 @@
-#
-# ChipFoundry chipIgnite shuttle metadata — Silicon Dreams Module 2.
-#
-# Learners replace `author` and `discord` before submission. All other
-# fields stay unchanged — they are enforced by the course grading CI.
-#
-
+# Tiny Tapeout project information
 project:
-  title:       "Silicon Dreams · Module 2 · The Parallel Shaft"
-  description: >-
-    Fault-injection hardened elevator controller. Week 2 of the
-    ChipMango x ChipFoundry Silicon Dreams course (CM-HW-101). Adds
-    reset-polarity, SEU, input-validation, and area fixes on top of
-    the Module 1 RTL.
-  author:      "YOUR NAME HERE"
-  discord:     "YOUR-DISCORD-HANDLE"
-  language:    "Verilog"
-  clock_hz:    100000000
-  tags:
-    - course
-    - silicon-dreams
-    - fault-injection
-    - chipignite
+  title:        "Elevator - M2 Parallel Shaft"
+  author:       "ChipMango"
+  discord:      "your_discord_handle"
+  description:  "Hardened elevator state machine with one-hot encoding, input validation, and fault injection harness for Silicon Dreams M2"
+  language:     "Verilog"
+  clock_hz:     10000000
 
+  # How many tiles your design occupies
+  tiles: "1x1"
+
+  # Your top module name - must start with "tt_um_"
+  top_module:  "tt_um_chipmango_elevator_m2"
+
+  # List your project's source files here
+  # FIX: Use the actual file name
+  source_files:
+    #- "src/top.v"          # ← Change this to the actual file name
+    # OR if your file is named elevator.v:
+     - "elevator.v"
+
+# The pinout of your project
 pinout:
-  ui_in:
-    - "request_strobe"
-    - "requested_floor[0]"
-    - "requested_floor[1]"
-    - "requested_floor[2]"
-    - "requested_floor[3]"
-    - "reserved"
-    - "reserved"
-    - "reserved"
-  uo_out:
-    - "current_floor[0]"
-    - "current_floor[1]"
-    - "current_floor[2]"
-    - "current_floor[3]"
-    - "state[0]"
-    - "state[1]"
-    - "state[2]"
-    - "door_open"
-  uio:
-    - "fault_inject_enable"
-    - "reserved"
-    - "reserved"
-    - "reserved"
-    - "reserved"
-    - "reserved"
-    - "reserved"
-    - "error_led"
+  # Inputs
+  ui[0]: "floor request bit 0"
+  ui[1]: "floor request bit 1"
+  ui[2]: "floor request bit 2"
+  ui[3]: "floor request bit 3"
+  ui[4]: "unused"
+  ui[5]: "unused"
+  ui[6]: "unused"
+  ui[7]: "unused"
 
-course:
-  code:        "CM-HW-101"
-  module:      "M2"
-  cohort:      "2026-spring"
-  partners:    ["ChipMango", "ChipFoundry"]
+  # Outputs
+  uo[0]: "7-seg segment a"
+  uo[1]: "7-seg segment b"
+  uo[2]: "7-seg segment c"
+  uo[3]: "7-seg segment d"
+  uo[4]: "7-seg segment e"
+  uo[5]: "7-seg segment f"
+  uo[6]: "7-seg segment g"
+  uo[7]: "idle indicator"
+
+  # Bidirectional pins
+  uio[0]: "not connected"
+  uio[1]: "not connected"
+  uio[2]: "not connected"
+  uio[3]: "not connected"
+  uio[4]: "not connected"
+  uio[5]: "not connected"
+  uio[6]: "not connected"
+  uio[7]: "error LED"
+
+# Do not change!
+yaml_version: 6
