@@ -1,0 +1,107 @@
+# Silicon Dreams Module 2 - fault matrix CI.
+#
+# Runs the full four-floor fault matrix on every push. Uploads
+# `fault_matrix_results.json` as an artefact so the ChipFoundry grader
+# service can compute your XP score and post it to the leaderboard.
+#
+# This workflow is expected to FAIL on the starter RTL (that is the
+# point of the module). Your task is to turn it green by fixing all
+# four bugs and keeping nominal behaviour intact.
+
+name: fault-matrix
+
+on:
+  push:
+    branches: [m2-escape, main]
+  pull_request:
+    branches: [m2-escape, main]
+  workflow_dispatch:
+
+jobs:
+  fault-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache apt packages
+        uses: actions/cache@v5
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/fault-matrix.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
+
+      - name: Cache iverilog and yosys
+        uses: actions/cache@v5
+        with:
+          path: |
+            /usr/bin/iverilog
+            /usr/bin/yosys
+            /usr/share/yosys
+          key: ${{ runner.os }}-iverilog-yosys-v1
+          restore-keys: |
+            ${{ runner.os }}-iverilog-yosys-
+
+      - name: Install simulator + Yosys
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog yosys
+
+      - name: Cache Python packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('test/requirements.txt') }}-v1
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python deps
+        run: pip install -r test/requirements.txt
+
+      - name: Run fault matrix
+        id: matrix
+        working-directory: test
+        continue-on-error: true
+        run: make fault
+
+      - name: Upload scoreboard
+        uses: actions/upload-artifact@v4
+        with:
+          name: fault-matrix-results
+          path: test/fault_injection/fault_matrix_results.json
+          if-no-files-found: error
+
+      - name: Post to ChipFoundry grader
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          CHIPFOUNDRY_TOKEN: ${{ secrets.CHIPFOUNDRY_TOKEN }}
+        run: |
+          # Skip if token is not set
+          if [ -z "$CHIPFOUNDRY_TOKEN" ]; then
+            echo " No CHIPFOUNDRY_TOKEN set - skipping leaderboard post."
+            exit 0
+          fi
+          
+          echo " Posting results to ChipFoundry grader..."
+          curl -sSf -X POST \
+            -H "Authorization: Bearer $CHIPFOUNDRY_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data @test/fault_injection/fault_matrix_results.json \
+            https://grader.chipfoundry.io/v1/silicon-dreams/m2
+          
+          echo " Results posted successfully!"
+
+      - name: Fail job if any floor failed
+        if: steps.matrix.outcome == 'failure'
+        run: |
+          echo " One or more floors failed. See the scoreboard artefact."
+          exit 1

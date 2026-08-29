@@ -1,0 +1,21 @@
+
+name: fpga
+
+on:
+  push:
+    branches: [main, m2-escape]    # ← Added m2-escape
+  pull_request:
+    branches: [main, m2-escape]    # ← Added m2-escape
+  workflow_dispatch:
+
+jobs:
+  fpga:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: FPGA bitstream for ChipDiscover FPGA dev board
+        uses: chipfoundry/tt-gds-action/fpga/ice40up5k@main
